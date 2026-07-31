@@ -16,5 +16,9 @@
         "docs",
         "README.md",
         "SECURITY.md",
+        "LICENSE",
+        "THIRD-PARTY-NOTICES.md",
+        "AGENTS.md",
+        "LESSONS_1.md",
     },
 }

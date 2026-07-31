@@ -149,4 +149,6 @@ for the side-by-side comparison with AnchorChain, and
 
 ## License
 
-Not specified. Ask the repository owner before distributing.
+MIT — see [`LICENSE`](LICENSE). Third-party components (AnchorChain `privacy`,
+`bsvz`) remain under their own licenses; see
+[`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md).
