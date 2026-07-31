@@ -137,7 +137,8 @@ if (zkp.sigma.schnorrVerify("my-app/auth/v1", zkp.generators.G, P, proof)) { /* 
 
 See [`docs/PROTOCOLS.md`](docs/PROTOCOLS.md) for the full protocol
 specification, [`SECURITY.md`](SECURITY.md) for the threat model and
-limitations, [`docs/COMPARISON-anchorchain.md`](docs/COMPARISON-anchorchain.md)
+limitations, [`docs/PRODUCTION-READINESS.md`](docs/PRODUCTION-READINESS.md) for
+the honest production-readiness assessment, [`docs/COMPARISON-anchorchain.md`](docs/COMPARISON-anchorchain.md)
 for the side-by-side comparison with AnchorChain, and
 [`docs/ROADMAP.md`](docs/ROADMAP.md) for the remaining work.
 
