@@ -118,4 +118,4 @@ backend. Environment: **Zig 0.16.0-dev.2535+b5bd49460**, `bsvz` pinned via
 
 All six primitives (Pedersen, Schnorr, CDS-OR, linear range, Bulletproofs,
 membership, conservation) ported, 53/53 tests passing in Debug + ReleaseSafe,
-byte-for-byte cross-checked against the AnchorChain reference, docs refreshed.
+byte-for-byte cross-checked against the AnchorChain reference.
