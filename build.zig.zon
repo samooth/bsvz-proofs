@@ -1,0 +1,20 @@
+.{
+    .name = .bsvz_zkp,
+    .version = "0.1.0",
+    .fingerprint = 0x58719589f018867a,
+    .dependencies = .{
+        .bsvz = .{
+            .url = "https://github.com/b-open-io/bsvz/archive/refs/heads/main.tar.gz",
+            .hash = "bsvz-0.1.0-wvsL-VG0FQBRZ-flFQMWcmdnooCqs5gb4XEsW1KbCWHK",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+        "tests",
+        "docs",
+        "README.md",
+        "SECURITY.md",
+    },
+}
