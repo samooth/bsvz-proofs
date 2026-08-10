@@ -1,5 +1,5 @@
 const std = @import("std");
-const zkp = @import("bsvz-zkp");
+const zkp = @import("bsvz-proofs");
 
 test "pedersen commit and verify" {
     const value = zkp.Scalar.fromInt(42);
@@ -55,8 +55,8 @@ test "default generators are valid curve points" {
 }
 
 test "hashToPoint is deterministic" {
-    const a = zkp.generators.hashToPoint("bsvz-zkp/test/domain/v1");
-    const b = zkp.generators.hashToPoint("bsvz-zkp/test/domain/v1");
+    const a = zkp.generators.hashToPoint("bsvz-proofs/test/domain/v1");
+    const b = zkp.generators.hashToPoint("bsvz-proofs/test/domain/v1");
     try std.testing.expect(zkp.pedersen.pointsEq(a, b));
 }
 

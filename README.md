@@ -1,4 +1,4 @@
-# bsvz-zkp
+# bsvz-proofs
 
 Zero-knowledge proof primitives in Zig, built on top of the
 [`bsvz`](https://github.com/b-open-io/bsvz) secp256k1 implementation. These are
@@ -40,18 +40,37 @@ zig build            # compile the module
 zig build test       # run the unit test suites (Debug)
 zig build test -Doptimize=ReleaseSafe   # optimized tests
 ./crosscheck/run.sh  # byte-compatibility cross-check against AnchorChain (needs node)
+zig build wasm       # build zig-out/bin/bsvz_proofs.wasm (web module)
+zig build wasm-test  # node smoke test for the wasm module (needs node)
 ```
 
 Six test suites (Pedersen, Sigma, range, Bulletproofs, membership,
 conservation) exercise real prove + verify round trips, including negative
 cases.
 
+## WebAssembly module
+
+`zig build wasm` produces a `wasm32-freestanding` module
+(`zig-out/bin/bsvz_proofs.wasm`) exposing every protocol as a C-ABI shim over
+pointer/length pairs — see `src/wasm.zig`. All 52 entry points plus `memory`
+are exported (Zig 0.16 drops `export fn` symbols from the export section under
+`-fno-entry`; `build.zig` re-exports them via `export_symbol_names`). Scalars
+are 32-byte big-endian; points are 33-byte compressed SEC1; proofs are written
+into caller buffers (size helpers like `zkp_range_bp_size` are provided).
+
+Entropy contract: the host must call `zkp_seed` with CSPRNG bytes (e.g.
+`crypto.getRandomValues`) before the first proof, otherwise the module traps.
+`zkp_set_rng_for_testing(seed)` pins a deterministic RNG for reproducible
+vectors. `zig build wasm-test` loads the module in node, asserts the same
+AnchorChain byte-compat vectors as `crosscheck/`, and round-trips every
+protocol (including tamper negatives).
+
 ## Quick start
 
 ```zig
 const std = @import("std");
 const bsvz = @import("bsvz");
-const zkp = @import("bsvz-zkp");
+const zkp = @import("bsvz-proofs");
 
 // Commit to a value (default generators G and H match AnchorChain).
 const value = zkp.Scalar.fromInt(42);
@@ -118,6 +137,8 @@ if (zkp.sigma.schnorrVerify("my-app/auth/v1", zkp.generators.G, P, proof)) { /* 
 | `src/bulletproofs.zig` | Bulletproofs (inner-product argument) range proofs, O(log bits) |
 | `src/membership.zig` | Zero-knowledge membership in a public set |
 | `src/conservation.zig` | Homomorphic conservation proof |
+| `src/wasm.zig` | WebAssembly C-ABI export shim (`zig build wasm`) |
+| `wasm/run-node.mjs` | Node smoke test for the wasm module (`zig build wasm-test`) |
 
 ## Design notes
 

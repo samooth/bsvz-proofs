@@ -1,5 +1,5 @@
 // Byte-for-byte reference implementation of the AnchorChain privacy
-// primitives, used to cross-check bsvz-zkp. Pure Node (crypto + BigInt), no
+// primitives, used to cross-check bsvz-proofs. Pure Node (crypto + BigInt), no
 // @bsv/sdk dependency. It reproduces exactly:
 //   - doubleSha256
 //   - hashToPoint / generatorVector / CURVE_H / BP_U  (genpoints.ts, curve.ts)

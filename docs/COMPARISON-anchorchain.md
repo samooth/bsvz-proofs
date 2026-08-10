@@ -1,12 +1,12 @@
-# Comparison: `bsvz-zkp` (Zig) vs AnchorChain `privacy` (TypeScript)
+# Comparison: `bsvz-proofs` (Zig) vs AnchorChain `privacy` (TypeScript)
 
 Reference clone: https://github.com/prof-faustus/anchorchain (the `privacy`
-package, plus its `bsv` curve wrapper). `bsvz-zkp` is now a **byte-for-byte
+package, plus its `bsv` curve wrapper). `bsvz-proofs` is now a **byte-for-byte
 port** of the AnchorChain privacy primitives: every public encoding, generator,
 and Fiat–Shamir challenge is identical, so proofs produced by either library
 verify on the other (see `crosscheck/`).
 
-| primitive | bsvz-zkp (Zig) | AnchorChain privacy (TS) |
+| primitive | bsvz-proofs (Zig) | AnchorChain privacy (TS) |
 | --- | --- | --- |
 | Pedersen commitments `C(v,r)=v·G+r·H` | `pedersen.zig` | `commit.ts` |
 | Fiat–Shamir transcript | `transcript.zig` (`challenge()`/`Hasher`, SHA-256d) | `transcript.ts` (one-shot `challenge()`, SHA-256d) |
@@ -40,7 +40,7 @@ verify on the other (see `crosscheck/`).
 
 ## Remaining deltas (documented differences)
 
-| aspect | bsvz-zkp | AnchorChain |
+| aspect | bsvz-proofs | AnchorChain |
 | --- | --- | --- |
 | Random scalar | **rejection sampling** over `u256 < L` (unbiased, `[1,L)`) | 32 random bytes reduced mod `n` (biased, zero rejected) |
 | `commit(0,0)` | returns identity (documented as unusable) | throws |
@@ -52,7 +52,7 @@ None of these affect the emitted bytes; they are API/style differences.
 
 ## Notes for maintainers
 
-- `bsvz-zkp`'s `Scalar.random()` is strictly better than AnchorChain's
+- `bsvz-proofs`'s `Scalar.random()` is strictly better than AnchorChain's
   `randScalar` (unbiased rejection sampling vs biased reduction).
 - AnchorChain's `H` is a module constant derived once; ours is a comptime const
   over the same domain — same value, no way to accidentally use a different

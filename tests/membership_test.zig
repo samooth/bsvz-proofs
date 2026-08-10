@@ -1,5 +1,5 @@
 const std = @import("std");
-const zkp = @import("bsvz-zkp");
+const zkp = @import("bsvz-proofs");
 
 test "membership proves membership" {
     const set = [_]zkp.Scalar{ zkp.Scalar.fromInt(1), zkp.Scalar.fromInt(42), zkp.Scalar.fromInt(999) };

@@ -1,4 +1,4 @@
-# AGENTS.md — guide for LLM agents working on bsvz-zkp
+# AGENTS.md — guide for LLM agents working on bsvz-proofs
 
 This file is for LLM agents (e.g. opencode). It captures durable, atemporal
 facts about the project so any future session can work here without re-learning
@@ -6,7 +6,7 @@ them. It does not document every function — read the source for that.
 
 ## What this project is
 
-`bsvz-zkp` is a Zig library of zero-knowledge proof primitives over secp256k1,
+`bsvz-proofs` is a Zig library of zero-knowledge proof primitives over secp256k1,
 built on the `bsvz` backend. Its core requirement: **byte-for-byte
 compatibility with the AnchorChain `privacy` TypeScript package** — same
 encodings, generators, labels, and Fiat–Shamir challenge — so proofs
@@ -25,6 +25,13 @@ that contract unless the TS side changes too.
   reference (`crosscheck/ref.js`). Must print `crosscheck OK: ...`. Requires
   `node`. Run after ANY change to transcript, generators, or challenge inputs.
 - `zig build crosscheck` — prints the Zig-side vectors (debug aid).
+- `zig build wasm` — build `zig-out/bin/bsvz_proofs.wasm` (wasm32-freestanding
+  C-ABI shim over every protocol, see `src/wasm.zig`).
+- `zig build wasm-test` — node smoke test (`wasm/run-node.mjs`): asserts the
+  same AnchorChain vectors as `zig build crosscheck` and round-trips every
+  exported protocol, including tamper negatives. Requires `node`. Run after
+  changing `src/wasm.zig`, the export list in `build.zig`, or the crosscheck
+  vectors.
 - Run `zig fmt` (whole tree: `src`, `tests`, `examples`, `build.zig`) before
   committing.
 
@@ -43,6 +50,7 @@ that contract unless the TS side changes too.
 | `src/bulletproofs.zig` | `proveRangeBP` → `ProveResult`, `verifyRangeBP(allocator, commitment, proof)`, `bulletproofDeinit`; bits power-of-two |
 | `src/membership.zig` | `proveMembership`/`verifyMembership`/`membershipProofDeinit`; field is `or_proof` |
 | `src/conservation.zig` | `netCommitment`, `proveConservation`, `verifyConservation` |
+| `src/wasm.zig` | wasm32 C-ABI export shim (pointer+len for every protocol); keep its `export fn` names in sync with `wasm_mod.export_symbol_names` in `build.zig` |
 | `tests/*_test.zig` | Six suites; each re-seeds a deterministic RNG per proof |
 
 Proof types own heap allocations; every module with proofs exports a matching
@@ -90,6 +98,11 @@ See `LESSONS_1.md` for the full list with examples. Highlights:
 - `1 << 256` overflows `u256` — explicit `if (bits < 256)` guards.
 - Compare bit tests at `u256` width: `((v.toU256() >> @intCast(i)) & 1) == 1`.
 - Free every intermediate slice (`defer allocator.free`); tests catch leaks.
+- **Wasm exports:** with `-fno-entry`, `export fn` symbols are dropped from the
+  wasm export section in 0.16 (both lld and the self-hosted linker). The build
+  API workaround is `root_module.export_symbol_names` (emits `--export=<name>`);
+  keep it in sync with the `export fn` names in `src/wasm.zig`. `u64` results
+  surface to JS as signed `i64`.
 
 ## bsvz API patterns
 
@@ -97,7 +110,7 @@ See `LESSONS_1.md` for the full list with examples. Highlights:
   `negate()`; point equality via `inner.equivalent`.
 - Scalar field is `bytes: [32]u8`; use `toBytes()` for `mul`.
 - `bsvz` is pinned in `build.zig.zon` by URL+hash; the module import name is
-  `bsvz`, and this package's module name is `bsvz-zkp`.
+  `bsvz`, and this package's module name is `bsvz-proofs`.
 
 ## Testing conventions
 

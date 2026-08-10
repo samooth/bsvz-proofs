@@ -1,7 +1,7 @@
 # Lessons learned — Session 1
 
 Everything non-obvious discovered while porting AnchorChain's `privacy`
-TypeScript package to Zig (`bsvz-zkp`), building on the `bsvz` secp256k1
+TypeScript package to Zig (`bsvz-proofs`), building on the `bsvz` secp256k1
 backend. Environment: **Zig 0.16.0-dev.2535+b5bd49460**, `bsvz` pinned via
 `build.zig.zon`.
 

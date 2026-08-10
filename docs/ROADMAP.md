@@ -1,6 +1,6 @@
 # Roadmap
 
-Status of `bsvz-zkp` vs the production-integration goals of an AnchorChain
+Status of `bsvz-proofs` vs the production-integration goals of an AnchorChain
 privacy backend.
 
 ## Done

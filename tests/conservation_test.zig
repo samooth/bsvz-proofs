@@ -1,5 +1,5 @@
 const std = @import("std");
-const zkp = @import("bsvz-zkp");
+const zkp = @import("bsvz-proofs");
 
 test "conservation proves balanced transaction" {
     const v1 = zkp.Scalar.fromInt(10);

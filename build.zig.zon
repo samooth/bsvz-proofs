@@ -1,7 +1,7 @@
 .{
-    .name = .bsvz_zkp,
+    .name = .bsvz_proofs,
     .version = "0.1.0",
-    .fingerprint = 0x58719589f018867a,
+    .fingerprint = 0x47a0375681aae28b,
     .dependencies = .{
         .bsvz = .{
             .url = "https://github.com/b-open-io/bsvz/archive/refs/heads/main.tar.gz",

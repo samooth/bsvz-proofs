@@ -1,5 +1,5 @@
 const std = @import("std");
-const zkp = @import("bsvz-zkp");
+const zkp = @import("bsvz-proofs");
 
 fn runBPTest(value: zkp.Scalar, num_bits: usize) !bool {
     const blinding = zkp.Scalar.random();

@@ -1,6 +1,6 @@
 # Protocol specification
 
-This document specifies the cryptographic protocols implemented in `bsvz-zkp`.
+This document specifies the cryptographic protocols implemented in `bsvz-proofs`.
 All arithmetic is over the secp256k1 curve:
 
 - group order `L` (the order of the base point `G`)

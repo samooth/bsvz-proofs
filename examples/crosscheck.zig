@@ -1,6 +1,6 @@
 const std = @import("std");
 const bsvz = @import("bsvz");
-const zkp = @import("bsvz-zkp");
+const zkp = @import("bsvz-proofs");
 
 const hex_chars = "0123456789abcdef";
 
