@@ -65,6 +65,35 @@ vectors. `zig build wasm-test` loads the module in node, asserts the same
 AnchorChain byte-compat vectors as `crosscheck/`, and round-trips every
 protocol (including tamper negatives).
 
+## npm package
+
+The `wasm/` directory is a publishable npm package (`bsvz-proofs`). `npm run
+build` (also run by `prepack`) builds a ReleaseSmall artifact and copies it in;
+the `.wasm` is gitignored, so `npm pack`/`npm publish` always ship a freshly
+built binary and consumers never need Zig.
+
+```sh
+cd wasm
+npm test            # build + run the smoke test against the packaged artifact
+npm pack --dry-run  # inspect the tarball (index.js + index.d.ts + bsvz_proofs.wasm)
+npm publish
+```
+
+The JS API (`wasm/index.js`) wraps the pointer/length shim: scalars and points
+are `Uint8Array`s (32 and 33 bytes), proofs are flat buffers sized by the
+`*Size` helpers, and `u64` results are unsigned `BigInt`.
+
+```js
+import { createProofs } from 'bsvz-proofs';
+
+const p = await createProofs();      // loads the bundled wasm
+p.seed();                            // CSPRNG entropy (required before proving)
+
+const commitment = p.pedersen.commit(42n, p.scalar.random());
+const { proof } = p.range.prove(42, p.scalar.random(), 16);
+const ok = p.range.verify(commitment, proof, 16);
+```
+
 ## Quick start
 
 ```zig
@@ -138,7 +167,9 @@ if (zkp.sigma.schnorrVerify("my-app/auth/v1", zkp.generators.G, P, proof)) { /* 
 | `src/membership.zig` | Zero-knowledge membership in a public set |
 | `src/conservation.zig` | Homomorphic conservation proof |
 | `src/wasm.zig` | WebAssembly C-ABI export shim (`zig build wasm`) |
-| `wasm/run-node.mjs` | Node smoke test for the wasm module (`zig build wasm-test`) |
+| `wasm/index.js` | JS API for the npm package (`bsvz-proofs`) wrapping the wasm shim |
+| `wasm/index.d.ts` | TypeScript declarations for the npm package |
+| `wasm/run-node.mjs` | Node smoke test (`zig build wasm-test` / `npm test`) |
 
 ## Design notes
 

@@ -32,6 +32,11 @@ that contract unless the TS side changes too.
   exported protocol, including tamper negatives. Requires `node`. Run after
   changing `src/wasm.zig`, the export list in `build.zig`, or the crosscheck
   vectors.
+- `wasm/` is a publishable npm package (`bsvz-proofs`): `npm run build` there
+  builds a ReleaseSmall wasm (`zig build wasm -Doptimize=ReleaseSmall`) and
+  copies it into `wasm/`; `prepack` runs it before `npm pack`/`npm publish`.
+  The `.wasm` is gitignored (build product — don't commit it). The JS API in
+  `wasm/index.js` wraps the shim; keep it in sync with the `export fn` list.
 - Run `zig fmt` (whole tree: `src`, `tests`, `examples`, `build.zig`) before
   committing.
 

@@ -1,0 +1,4 @@
+# Built wasm artifact (produced by `npm run build` / `npm run prepack`).
+bsvz_proofs.wasm
+# Local `npm pack` output.
+*.tgz

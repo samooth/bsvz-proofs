@@ -1,0 +1,39 @@
+{
+  "name": "bsvz-proofs",
+  "version": "0.1.0",
+  "description": "Zero-knowledge proof primitives over secp256k1, byte-for-byte compatible with AnchorChain privacy (WebAssembly module)",
+  "type": "module",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js"
+    },
+    "./bsvz_proofs.wasm": "./bsvz_proofs.wasm"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "bsvz_proofs.wasm"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "(cd .. && zig build wasm -Doptimize=ReleaseSmall) && cp ../zig-out/bin/bsvz_proofs.wasm .",
+    "prepack": "npm run build",
+    "test": "npm run build && node run-node.mjs ./bsvz_proofs.wasm"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "zero-knowledge",
+    "zkp",
+    "secp256k1",
+    "bulletproofs",
+    "anchorchain",
+    "wasm",
+    "pedersen"
+  ],
+  "license": "MIT"
+}
