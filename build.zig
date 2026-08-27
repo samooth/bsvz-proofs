@@ -145,7 +145,7 @@ pub fn build(b: *std.Build) void {
     // Node smoke test for the wasm module (loads .wasm, round-trips every
     // protocol, and asserts the AnchorChain byte-compat vectors).
     const node_run = b.addSystemCommand(&.{"node"});
-    node_run.addArg(b.path("wasm/run-node.mjs"));
+    node_run.addArg("wasm/run-node.mjs");
     node_run.addArtifactArg(wasm_exe);
     const wasm_test_step = b.step("wasm-test", "Run the wasm node smoke test");
     wasm_test_step.dependOn(&node_run.step);
