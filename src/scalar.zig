@@ -10,16 +10,16 @@ pub const EncodedScalar = [32]u8;
 pub const Scalar = struct {
     bytes: EncodedScalar,
 
-    pub const zero = Scalar{ .bytes = [_]u8{0} ** 32 };
+    pub const zero = Scalar{ .bytes = @as([32]u8, @splat(0)) };
     pub const one = blk: {
-        var b = [_]u8{0} ** 32;
+        var b = @as([32]u8, @splat(0));
         b[31] = 1;
         break :blk Scalar{ .bytes = b };
     };
 
     /// Reduce a 256-bit big-endian value mod L (used for Fiat-Shamir challenges).
     pub fn fromBytes(bytes: EncodedScalar) Scalar {
-        var padded: [48]u8 = [_]u8{0} ** 48;
+        var padded = @as([48]u8, @splat(0));
         @memcpy(padded[16..], &bytes);
         return .{ .bytes = scalar_field.reduce48(padded, .big) };
     }
@@ -29,7 +29,7 @@ pub const Scalar = struct {
     }
 
     pub fn fromInt(value: u64) Scalar {
-        var b = [_]u8{0} ** 32;
+        var b = @as([32]u8, @splat(0));
         std.mem.writeInt(u64, b[24..32], value, .big);
         return .{ .bytes = b };
     }
