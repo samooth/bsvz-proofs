@@ -1,5 +1,7 @@
 # bsvz-proofs
 
+![CI](https://github.com/samooth/bsvz-proofs/actions/workflows/ci.yml/badge.svg)
+
 Zero-knowledge proof primitives in Zig, built on top of the
 [`bsvz`](https://github.com/b-open-io/bsvz) secp256k1 implementation. These are
 the privacy building blocks of an AnchorChain port: every proof is
